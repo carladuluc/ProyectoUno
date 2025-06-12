@@ -19,18 +19,48 @@ namespace Presentacion
         private readonly ProductoViewModel viewModel = new ProductoViewModel();
         private readonly ProductoValidador _validator;
         private readonly ProductoRepository productoRepository;
+        private readonly CategoriaRepository _categoriaRepository;
+        private readonly SuplidorRepository _suplidorRepository;
 
         //public ProductoViewModel ViewModel { get; set; }
 
+        //Se cargaron los 3 repositorios para que se muestren los datos que ya se han ingresado
 
-        public CrearProducto(ProductoValidador validator, ProductoRepository productoRepository)
+        public CrearProducto(ProductoValidador validator, ProductoRepository productoRepository, CategoriaRepository categoriaRepository, SuplidorRepository suplidorRepository)
         {
             InitializeComponent();
             Load += CrearProducto_Load;
             FormClosing += CrearProducto_FormClosing;
             this._validator = validator;
             this.productoRepository = productoRepository;
+            this._categoriaRepository = categoriaRepository;
+            this._suplidorRepository = suplidorRepository;
         }
+
+
+
+        //Se cargan los suplidores y las categorias para crear el producto
+
+        private void CargarCategorias()
+        {
+            var categorias = _categoriaRepository.DarCategoria().ToList();
+            comboBoxCategoria.DataSource = categorias;
+            comboBoxCategoria.DisplayMember = "NombreCategoria";
+            comboBoxCategoria.ValueMember = "IdCategoria";
+            comboBoxCategoria.SelectedIndex = -1;
+        }
+
+        private void CargarSuplidores()
+        {
+            var suplidores = _suplidorRepository.DarSuplidor().ToList();
+            comboBoxSuplidor.DataSource = suplidores;
+            comboBoxSuplidor.DisplayMember = "NombreEmpresa";
+            comboBoxSuplidor.ValueMember = "IdSuplidor";
+            comboBoxSuplidor.SelectedIndex = -1;
+        }
+
+
+
 
         private void CrearProducto_FormClosing(object? sender, FormClosingEventArgs e)
         {
@@ -45,10 +75,17 @@ namespace Presentacion
         private void CrearProducto_Load(object? sender, EventArgs e)
         {
             bindingSource1.Add(viewModel);
+            CargarCategorias();
+            CargarSuplidores();
         }
 
         private void Aceptarbtn_Click(object sender, EventArgs e)
         {
+            // paar asegurarse de que los valores seleccionados se pasen al viewModel
+            viewModel.IdCategoria = comboBoxCategoria.SelectedValue is not null ? (int)comboBoxCategoria.SelectedValue : 0;
+            viewModel.IdSuplidor = comboBoxSuplidor.SelectedValue is not null ? (int)comboBoxSuplidor.SelectedValue : 0;
+
+
             var validationResult = _validator.Validate(viewModel);
             if (!validationResult.IsValid)
             {
@@ -94,6 +131,8 @@ namespace Presentacion
             DialogResult = DialogResult.Cancel;
         }
 
+        //cuando se va a editar un producto existente
+
         internal void Inicializar(Producto producto)
         {
             viewModel.IdProducto= producto.IdProducto;
@@ -126,6 +165,8 @@ namespace Presentacion
                                                .MaximumLength(500);
             RuleFor(a => a.PrecioUnitario).NotEmpty().WithMessage("No puede dejar el precio vacío")
                                           .GreaterThanOrEqualTo(5).WithMessage("El precio debe ser mayor a 5");
+            RuleFor(a => a.IdCategoria).GreaterThan(0).WithMessage("Debe seleccionar una categoría válida.");
+            RuleFor(a => a.IdSuplidor).GreaterThan(0).WithMessage("Debe seleccionar un suplidor válido.");
 
         }
     }

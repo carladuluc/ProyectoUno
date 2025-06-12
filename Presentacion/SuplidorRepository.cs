@@ -17,6 +17,8 @@ namespace Presentacion
             this.configuration = configuration;
         }
 
+        //para obtener todas los suplidores activos de la base de datos.
+
         public IEnumerable<Suplidor> DarSuplidor()
         {
             var suplidores = new List<Suplidor>();
@@ -27,12 +29,12 @@ namespace Presentacion
 
             var command = connection.CreateCommand();
             command.CommandText = @" SELECT Suplidor.*
-                                    FROM     Suplidor";
+                                    FROM     Suplidor
+                                    WHERE IsActivo = 1";
 
             var dataReader = command.ExecuteReader();
             while (dataReader.Read())
             {
-
                 var suplidor = new Suplidor();
                 suplidor.IdSuplidor = (int)dataReader["IdSuplidor"];
                 suplidor.Cedula = (string)dataReader["Cedula"];
@@ -42,6 +44,8 @@ namespace Presentacion
                 suplidor.Correo = (string)dataReader["Correo"];
                 suplidor.SitioWeb = (string)dataReader["SitioWeb"];
                 suplidor.Celular = (string)dataReader["Celular"];
+                suplidor.Fecha_Creacion = (DateTime)dataReader["Fecha_Creacion"];
+                suplidor.Fecha_Modificacion = (DateTime)dataReader["Fecha_Modificacion"];
 
                 suplidores.Add(suplidor);
             }
@@ -58,6 +62,24 @@ namespace Presentacion
             return connection;
         }
 
+        //Soft-Delete
+        public bool DesactivarSuplidor(int id) //Borrado lógico
+        {
+            using (var connection = CrearConexion())
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"UPDATE Suplidor 
+                SET IsActivo = 0, Fecha_Modificacion = GETDATE()
+                WHERE IdSuplidor = @Id";
+
+                command.Parameters.AddWithValue("@Id", id);
+                return command.ExecuteNonQuery() > 0;
+            }
+
+        }
+
+        //Crea un Suplidor
         public void Crear(Suplidor suplidor)
         {
             SqlConnection connection = CrearConexion();
@@ -94,6 +116,7 @@ namespace Presentacion
 
         }
 
+        //EL BORRADO NO SE ESTÁ UTILIZANDO SE CAMBIO POR EL SOFT-DELETE, basicamente desactivando
         public void Borrar(int IdSuplidor)
         {
             var connection = CrearConexion();
@@ -106,7 +129,7 @@ namespace Presentacion
             connection.Close();
         }
 
-
+        //Actualiza los suplidores
         public void Actualizar(Suplidor suplidor)
         {
             SqlConnection connection = CrearConexion();
@@ -119,6 +142,7 @@ namespace Presentacion
                                 ,[Correo] = @Correo
                                 ,[SitioWeb] = @SitioWeb
                                 ,[Celular] = @Celular
+                                ,[Fecha_Modificacion] = GETDATE()
                             WHERE IdSuplidor= @IdSuplidor";
             command.Parameters.AddWithValue("@Cedula", suplidor.Cedula);
             command.Parameters.AddWithValue("@Nombre", suplidor.Nombre);
@@ -153,6 +177,10 @@ namespace Presentacion
         public string Correo { get; set; }
         public string SitioWeb { get; set; }
         public string Celular { get; set; }
+
+        //Para modificaciones o creaciones (un registro)
+        public DateTime Fecha_Creacion { get; set; }
+        public DateTime Fecha_Modificacion { get; set; }
 
     }
 }

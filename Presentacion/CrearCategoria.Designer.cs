@@ -38,20 +38,19 @@
             label2 = new Label();
             textBox1 = new TextBox();
             label1 = new Label();
-            pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
-            categoriaViewModelBindingSource = new BindingSource(components);
+            btnAgregarFoto = new Button();
+            openFileDialog1 = new OpenFileDialog();
+            flowFotos = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)categoriaViewModelBindingSource).BeginInit();
             SuspendLayout();
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            label3.Location = new Point(7, 190);
+            label3.Location = new Point(7, 222);
             label3.Name = "label3";
             label3.Size = new Size(78, 21);
             label3.TabIndex = 4;
@@ -62,7 +61,7 @@
             Aceptarbtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Aceptarbtn.BackColor = Color.White;
             Aceptarbtn.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            Aceptarbtn.Location = new Point(203, 381);
+            Aceptarbtn.Location = new Point(293, 419);
             Aceptarbtn.Name = "Aceptarbtn";
             Aceptarbtn.Size = new Size(94, 30);
             Aceptarbtn.TabIndex = 6;
@@ -75,7 +74,7 @@
             Cancelarbtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Cancelarbtn.BackColor = Color.White;
             Cancelarbtn.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            Cancelarbtn.Location = new Point(103, 381);
+            Cancelarbtn.Location = new Point(193, 419);
             Cancelarbtn.Name = "Cancelarbtn";
             Cancelarbtn.Size = new Size(94, 30);
             Cancelarbtn.TabIndex = 5;
@@ -93,7 +92,7 @@
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.ScrollBars = ScrollBars.Both;
-            textBox2.Size = new Size(285, 27);
+            textBox2.Size = new Size(375, 58);
             textBox2.TabIndex = 3;
             // 
             // bindingSource1
@@ -118,7 +117,7 @@
             textBox1.Location = new Point(7, 89);
             textBox1.MaxLength = 200;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(285, 28);
+            textBox1.Size = new Size(375, 28);
             textBox1.TabIndex = 1;
             // 
             // label1
@@ -131,28 +130,39 @@
             label1.TabIndex = 0;
             label1.Text = "Nombre Categoría";
             // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(7, 216);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(179, 132);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 14;
-            pictureBox1.TabStop = false;
-            // 
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(44, 3);
+            pictureBox2.Location = new Point(93, 12);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(211, 49);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 15;
             pictureBox2.TabStop = false;
             // 
-            // categoriaViewModelBindingSource
+            // btnAgregarFoto
             // 
-            categoriaViewModelBindingSource.DataSource = typeof(CategoriaViewModel);
+            btnAgregarFoto.Location = new Point(7, 215);
+            btnAgregarFoto.Name = "btnAgregarFoto";
+            btnAgregarFoto.Size = new Size(116, 34);
+            btnAgregarFoto.TabIndex = 16;
+            btnAgregarFoto.Text = "Subir Foto";
+            btnAgregarFoto.UseVisualStyleBackColor = true;
+            btnAgregarFoto.Click += btnAgregarFoto_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            openFileDialog1.Filter = "\"Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp\"";
+            openFileDialog1.Multiselect = true;
+            // 
+            // flowFotos
+            // 
+            flowFotos.AutoScroll = true;
+            flowFotos.Location = new Point(12, 255);
+            flowFotos.Name = "flowFotos";
+            flowFotos.Size = new Size(218, 158);
+            flowFotos.TabIndex = 17;
             // 
             // CrearCategoria
             // 
@@ -161,9 +171,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = Cancelarbtn;
-            ClientSize = new Size(309, 423);
+            ClientSize = new Size(399, 461);
+            Controls.Add(flowFotos);
+            Controls.Add(btnAgregarFoto);
             Controls.Add(pictureBox2);
-            Controls.Add(pictureBox1);
             Controls.Add(label3);
             Controls.Add(Aceptarbtn);
             Controls.Add(Cancelarbtn);
@@ -181,9 +192,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CrearCategoria";
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)categoriaViewModelBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -197,9 +206,10 @@
         private Label label2;
         private TextBox textBox1;
         private Label label1;
-        private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private BindingSource bindingSource1;
-        private BindingSource categoriaViewModelBindingSource;
+        private Button btnAgregarFoto;
+        private OpenFileDialog openFileDialog1;
+        private FlowLayoutPanel flowFotos;
     }
 }

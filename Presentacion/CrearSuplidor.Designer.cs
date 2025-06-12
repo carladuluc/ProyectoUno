@@ -31,7 +31,6 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CrearSuplidor));
             textBox3 = new TextBox();
-            bindingSource1 = new BindingSource(components);
             label3 = new Label();
             Aceptarbtn = new Button();
             Cancelarbtn = new Button();
@@ -46,12 +45,11 @@
             textBox6 = new TextBox();
             label6 = new Label();
             pictureBox2 = new PictureBox();
-            suplidorViewModelBindingSource = new BindingSource(components);
             label7 = new Label();
             textBox7 = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
+            bindingSource1 = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)suplidorViewModelBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
             // 
             // textBox3
@@ -64,10 +62,6 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(285, 28);
             textBox3.TabIndex = 5;
-            // 
-            // bindingSource1
-            // 
-            bindingSource1.DataSource = typeof(SuplidorViewModel);
             // 
             // label3
             // 
@@ -220,10 +214,6 @@
             pictureBox2.TabIndex = 20;
             pictureBox2.TabStop = false;
             // 
-            // suplidorViewModelBindingSource
-            // 
-            suplidorViewModelBindingSource.DataSource = typeof(SuplidorViewModel);
-            // 
             // label7
             // 
             label7.AutoSize = true;
@@ -243,6 +233,10 @@
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(285, 28);
             textBox7.TabIndex = 13;
+            // 
+            // bindingSource1
+            // 
+            bindingSource1.DataSource = typeof(SuplidorViewModel);
             // 
             // CrearSuplidor
             // 
@@ -277,9 +271,8 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CrearSuplidor";
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)suplidorViewModelBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -301,9 +294,8 @@
         private TextBox textBox6;
         private Label label6;
         private PictureBox pictureBox2;
-        private BindingSource suplidorViewModelBindingSource;
-        private BindingSource bindingSource1;
         private Label label7;
         private TextBox textBox7;
+        private BindingSource bindingSource1;
     }
 }

@@ -66,21 +66,47 @@ namespace Presentacion
 
         private void eliminarSuplidorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (SuplidoresDataGridView.SelectedRows.Count > 0)
+            //BORRADO TOTAL
+            //if (SuplidoresDataGridView.SelectedRows.Count <= 0)
+            //{
+            //    MessageBox.Show("Debe de seleccionar un registro");
+            //    return;
+            //}
+
+            //if (MessageBox.Show("¿Estás seguro de borrar este suplidor?","Borrar Suplidor", MessageBoxButtons.YesNo, MessageBoxIcon.Question)== DialogResult.Yes)
+            //{
+            //    var suplidor = (Suplidor)SuplidoresDataGridView.SelectedRows[0].DataBoundItem;
+            //    _suplidorRepository.Borrar(suplidor.IdSuplidor);
+
+            //    CargarSuplidores();
+            //}
+
+
+            //BORRADO LÓGICO
+            if (SuplidoresDataGridView.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Debe de seleccionar un registro");
                 return;
             }
 
-            if (MessageBox.Show("¿Estás seguro de borrar este suplidor?","Borrar Suplidor", MessageBoxButtons.YesNo, MessageBoxIcon.Question)== DialogResult.Yes)
+            if (MessageBox.Show("¿Estás seguro de desactivar este suplidor?", "Borrar Suplidor", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 var suplidor = (Suplidor)SuplidoresDataGridView.SelectedRows[0].DataBoundItem;
-                _suplidorRepository.Borrar(suplidor.IdSuplidor);
+                var desactivado = _suplidorRepository.DesactivarSuplidor(suplidor.IdSuplidor);
+                if (desactivado)
+                {
+                    MessageBox.Show("Suplidor desactivado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarSuplidores();
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo desactivar el suplidor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 CargarSuplidores();
             }
 
-            
+
         }
     }
 }

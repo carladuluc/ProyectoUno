@@ -40,10 +40,10 @@
             textBox3 = new TextBox();
             label3 = new Label();
             pictureBox2 = new PictureBox();
-            comboBox1 = new ComboBox();
+            comboBoxCategoria = new ComboBox();
             label4 = new Label();
             label5 = new Label();
-            comboBox2 = new ComboBox();
+            comboBoxSuplidor = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -93,7 +93,7 @@
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.ScrollBars = ScrollBars.Both;
-            textBox2.Size = new Size(285, 27);
+            textBox2.Size = new Size(285, 61);
             textBox2.TabIndex = 3;
             // 
             // Cancelarbtn
@@ -101,7 +101,7 @@
             Cancelarbtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Cancelarbtn.FlatStyle = FlatStyle.Popup;
             Cancelarbtn.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            Cancelarbtn.Location = new Point(113, 380);
+            Cancelarbtn.Location = new Point(113, 400);
             Cancelarbtn.Name = "Cancelarbtn";
             Cancelarbtn.Size = new Size(94, 30);
             Cancelarbtn.TabIndex = 10;
@@ -114,7 +114,7 @@
             Aceptarbtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Aceptarbtn.FlatStyle = FlatStyle.Popup;
             Aceptarbtn.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            Aceptarbtn.Location = new Point(213, 380);
+            Aceptarbtn.Location = new Point(213, 400);
             Aceptarbtn.Name = "Aceptarbtn";
             Aceptarbtn.Size = new Size(94, 30);
             Aceptarbtn.TabIndex = 11;
@@ -127,7 +127,7 @@
             textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox3.DataBindings.Add(new Binding("Text", bindingSource1, "PrecioUnitario", true));
             textBox3.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            textBox3.Location = new Point(12, 205);
+            textBox3.Location = new Point(12, 239);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(285, 28);
             textBox3.TabIndex = 5;
@@ -136,7 +136,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            label3.Location = new Point(12, 181);
+            label3.Location = new Point(12, 215);
             label3.Name = "label3";
             label3.Size = new Size(108, 21);
             label3.TabIndex = 4;
@@ -152,20 +152,20 @@
             pictureBox2.TabIndex = 16;
             pictureBox2.TabStop = false;
             // 
-            // comboBox1
+            // comboBoxCategoria
             // 
-            comboBox1.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(12, 259);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(285, 29);
-            comboBox1.TabIndex = 7;
+            comboBoxCategoria.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
+            comboBoxCategoria.FormattingEnabled = true;
+            comboBoxCategoria.Location = new Point(12, 293);
+            comboBoxCategoria.Name = "comboBoxCategoria";
+            comboBoxCategoria.Size = new Size(285, 29);
+            comboBoxCategoria.TabIndex = 7;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            label4.Location = new Point(12, 235);
+            label4.Location = new Point(12, 269);
             label4.Name = "label4";
             label4.Size = new Size(74, 21);
             label4.TabIndex = 6;
@@ -175,20 +175,20 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            label5.Location = new Point(12, 291);
+            label5.Location = new Point(12, 325);
             label5.Name = "label5";
             label5.Size = new Size(65, 21);
             label5.TabIndex = 8;
             label5.Text = "Suplidor";
             // 
-            // comboBox2
+            // comboBoxSuplidor
             // 
-            comboBox2.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(12, 315);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(285, 29);
-            comboBox2.TabIndex = 9;
+            comboBoxSuplidor.Font = new Font("Bahnschrift SemiCondensed", 10.2F, FontStyle.Bold);
+            comboBoxSuplidor.FormattingEnabled = true;
+            comboBoxSuplidor.Location = new Point(12, 349);
+            comboBoxSuplidor.Name = "comboBoxSuplidor";
+            comboBoxSuplidor.Size = new Size(285, 29);
+            comboBoxSuplidor.TabIndex = 9;
             // 
             // CrearProducto
             // 
@@ -197,11 +197,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = Cancelarbtn;
-            ClientSize = new Size(309, 423);
+            ClientSize = new Size(309, 443);
             Controls.Add(label5);
-            Controls.Add(comboBox2);
+            Controls.Add(comboBoxSuplidor);
             Controls.Add(label4);
-            Controls.Add(comboBox1);
+            Controls.Add(comboBoxCategoria);
             Controls.Add(pictureBox2);
             Controls.Add(textBox3);
             Controls.Add(label3);
@@ -237,10 +237,10 @@
         private TextBox textBox3;
         private Label label3;
         private PictureBox pictureBox2;
-        private BindingSource bindingSource1;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxCategoria;
         private Label label4;
         private Label label5;
-        private ComboBox comboBox2;
+        private ComboBox comboBoxSuplidor;
+        private BindingSource bindingSource1;
     }
 }

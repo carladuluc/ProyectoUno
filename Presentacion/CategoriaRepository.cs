@@ -19,6 +19,8 @@ namespace Presentacion
             this.configuration = configuration;
         }
 
+        //para obtener todas las categorías activas de la base de datos.
+
         public IEnumerable<Categoria> DarCategoria()
         {
             var categorias = new List<Categoria>();
@@ -28,7 +30,8 @@ namespace Presentacion
 
             var command = connection.CreateCommand();
             command.CommandText = @" SELECT Categoria.*
-                                    FROM     Categoria";
+                                    FROM     Categoria
+                                    WHERE IsActivo = 1"; // booleano (pa cuando este activo 1) especialmente sirve para el borrado lógico
 
             var dataReader = command.ExecuteReader();
             while (dataReader.Read())
@@ -37,6 +40,8 @@ namespace Presentacion
                 categoria.IdCategoria = (int)dataReader["IdCategoria"];
                 categoria.NombreCategoria = (string)dataReader["NombreCategoria"];
                 categoria.DescripcionCategoria = (string)dataReader["DescripcionCategoria"];
+                categoria.Fecha_Creacion = (DateTime)dataReader["Fecha_Creacion"];
+                categoria.Fecha_Modificacion = (DateTime)dataReader["Fecha_Modificacion"];
 
                 categorias.Add(categoria);
             }
@@ -46,6 +51,8 @@ namespace Presentacion
 
         }
 
+
+
         private SqlConnection CrearConexion()
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -53,6 +60,25 @@ namespace Presentacion
             return connection;
         }
 
+
+        //Hace un borrado lógico en vez de eliminar  actualiza a cero para que no se muestre
+        public bool DesactivarCategoria(int id) //Borrado lógico
+        {
+            using (var connection = CrearConexion())
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"UPDATE Categoria 
+                SET IsActivo = 0, Fecha_Modificacion = GETDATE()
+                WHERE IdCategoria = @Id";
+
+                command.Parameters.AddWithValue("@Id", id);
+                return command.ExecuteNonQuery() > 0; // 0 a desactivado
+            }
+
+        }
+
+        //Crea una categoria
         public void Crear(Categoria categoria)
         {
             SqlConnection connection = CrearConexion();
@@ -74,6 +100,8 @@ namespace Presentacion
 
         }
 
+
+        //Esto es para borrar completamente, NO SE ESTÁ UTILIZANDO PORQUE SE CAMBIÓ POR EL SOFT-DELETE Como si fuera desactivandolo
         public void Borrar(int IdCategoria)
         {
             var connection = CrearConexion();
@@ -86,6 +114,8 @@ namespace Presentacion
             connection.Close();
         }
 
+
+        //Actualiza la categoria
         public void Actualizar(Categoria categoria)
         {
             SqlConnection connection = CrearConexion();
@@ -93,6 +123,7 @@ namespace Presentacion
             command.CommandText = @"UPDATE [dbo].[Categoria]
                                     SET [NombreCategoria] = @NombreCategoria
                                     ,[DescripcionCategoria] = @DescripcionCategoria
+                                    ,[Fecha_Modificacion] = GETDATE()
                                     WHERE IdCategoria= @IdCategoria";
             command.Parameters.AddWithValue("@NombreCategoria", categoria.NombreCategoria);
             command.Parameters.AddWithValue("@DescripcionCategoria", categoria.DescripcionCategoria);
@@ -115,6 +146,10 @@ namespace Presentacion
         public int IdCategoria { get; set; }
         public string NombreCategoria { get; set; }
         public string DescripcionCategoria { get; set; }
+
+        //Para modificaciones o creaciones (un registro)
+        public DateTime Fecha_Creacion { get; set; }
+        public DateTime Fecha_Modificacion { get; set; }
 
     }
 }

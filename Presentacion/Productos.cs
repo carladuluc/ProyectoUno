@@ -15,6 +15,8 @@ namespace Presentacion
             Load += Productos_Load;
         }
 
+        
+
         private void Productos_Load(object? sender, EventArgs e)
         {
             CargarProductos();
@@ -24,6 +26,11 @@ namespace Presentacion
         {
             var productos = _productoRepository.DarProducto();
             ProductosDataGridView.DataSource = productos;
+
+            // Para ocultar las columnas de los Id del producto y se vea más estético en datagrid
+            ProductosDataGridView.Columns["IdProducto"].Visible = false;
+            ProductosDataGridView.Columns["IdCategoria"].Visible = false;
+            ProductosDataGridView.Columns["IdSuplidor"].Visible = false;
         }
 
         private void nuevoProductoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,16 +49,42 @@ namespace Presentacion
 
         private void eliminarProductoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ProductosDataGridView.SelectedRows.Count > 0)
+            //BORRADO TOTAL
+            //if (ProductosDataGridView.SelectedRows.Count > 0)
+            //{
+            //    MessageBox.Show("Debe de seleccionar un registro");
+            //    return;
+            //}
+
+            //if (MessageBox.Show("¿Estás seguro de borrar este producto?", "Borrar Producto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            //{
+            //    var producto = (Producto)ProductosDataGridView.SelectedRows[0].DataBoundItem;
+            //    _productoRepository.Borrar(producto.IdProducto);
+
+            //    CargarProductos();
+            //}
+
+
+            //BORRADO LÓGICO
+            if (ProductosDataGridView.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Debe de seleccionar un registro");
                 return;
             }
 
-            if (MessageBox.Show("¿Estás seguro de borrar este producto?", "Borrar Producto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("¿Estás seguro de desactivar este producto?", "Borrar Producto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 var producto = (Producto)ProductosDataGridView.SelectedRows[0].DataBoundItem;
-                _productoRepository.Borrar(producto.IdProducto);
+                var desactivado = _productoRepository.DesactivarProducto(producto.IdProducto);
+                if (desactivado)
+                {
+                    MessageBox.Show("Producto desactivado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarProductos();
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo desactivar el producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 CargarProductos();
             }

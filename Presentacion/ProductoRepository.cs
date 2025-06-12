@@ -17,6 +17,7 @@ namespace Presentacion
             this.configuration = configuration;
         }
 
+        
 
         public IEnumerable<Producto> DarProducto()
         {
@@ -26,17 +27,36 @@ namespace Presentacion
             connection.Open();
 
             var command = connection.CreateCommand();
-            command.CommandText = @" SELECT Producto.*
-                                    FROM     Producto";
+            command.CommandText = @" SELECT 
+                                     p.IdProducto,
+                                     p.NombreProducto,
+                                     p.DescripcionProducto,
+                                    p.PrecioUnitario,
+                                    p.IdCategoria,
+                                    c.NombreCategoria,
+                                    p.IdSuplidor,
+                                    s.NombreEmpresa,
+                                    p.Fecha_Creacion,
+                                    p.Fecha_Modificacion
+                                    FROM Producto p
+                                    JOIN Categoria c ON p.IdCategoria = c.IdCategoria
+                                    JOIN Suplidor s ON p.IdSuplidor = s.IdSuplidor
+                                    WHERE p.IsActivo = 1";
 
             var dataReader = command.ExecuteReader();
             while (dataReader.Read())
             {
                 var producto = new Producto();
                 producto.IdProducto = (int)dataReader["IdProducto"];
+                producto.IdCategoria = (int)dataReader["IdCategoria"];
+                producto.IdSuplidor = (int)dataReader["IdSuplidor"];
                 producto.NombreProducto = (string)dataReader["NombreProducto"];
                 producto.DescripcionProducto = (string)dataReader["DescripcionProducto"];
                 producto.PrecioUnitario = (decimal)dataReader["PrecioUnitario"];
+                producto.NombreCategoria = (string)dataReader["NombreCategoria"];
+                producto.NombreEmpresa = (string)dataReader["NombreEmpresa"];
+                producto.Fecha_Creacion = (DateTime)dataReader["Fecha_Creacion"];
+                producto.Fecha_Modificacion = (DateTime)dataReader["Fecha_Modificacion"];
                 productos.Add(producto);
             }
             connection.Close();
@@ -51,6 +71,26 @@ namespace Presentacion
             var connection = new SqlConnection(connectionString);
             return connection;
         }
+
+
+
+        public bool DesactivarProducto(int id) //Borrado lógico
+        {
+            using (var connection = CrearConexion())
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"UPDATE Producto 
+                SET IsActivo = 0, Fecha_Modificacion = GETDATE()
+                WHERE IdProducto = @Id";
+
+                command.Parameters.AddWithValue("@Id", id);
+                return command.ExecuteNonQuery() > 0;
+            }
+
+        }
+
+
 
         public void Crear(Producto producto)
         {
@@ -104,6 +144,7 @@ namespace Presentacion
                                 ,[NombreProducto] = @NombreProducto
                                 ,[DescripcionProducto] = @DescripcionProducto
                                 ,[PrecioUnitario] = @PrecioUnitario
+                                ,[Fecha_Modificacion] = GETDATE()
                             WHERE IdProducto= @IdProducto";
             command.Parameters.AddWithValue("@IdCategoria", producto.IdCategoria);
             command.Parameters.AddWithValue("@IdSuplidor", producto.IdSuplidor);
@@ -131,6 +172,15 @@ namespace Presentacion
         public string NombreProducto { get; set; }
         public string DescripcionProducto { get; set; }
         public decimal PrecioUnitario { get; set; }
+
+        //Para modificaciones o creaciones (un registro)
+
+        public DateTime Fecha_Creacion { get; set; }
+        public DateTime Fecha_Modificacion { get; set; }
+
+        // Nuevas propiedades para mostrar en el DataGridView
+        public string NombreCategoria { get; set; }
+        public string NombreEmpresa { get; set; }
 
     }
 }

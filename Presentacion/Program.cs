@@ -27,6 +27,7 @@ namespace Presentacion
             Services.AddTransient<ProductoRepository>();
             Services.AddTransient<SuplidorRepository>();
             Services.AddTransient<CategoriaRepository>();
+            Services.AddTransient<FotoRepository>();
             //Para Formularios (listas)
             Services.AddTransient<Inicio>();
             Services.AddTransient<Productos>(); 
